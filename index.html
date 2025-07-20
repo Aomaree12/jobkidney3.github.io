@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -58,26 +56,62 @@
         <div class="container mx-auto px-4 py-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="bg-gradient-to-r from-teal-500 to-emerald-500 p-3 rounded-xl">
-                        <i class="fas fa-kidneys text-white text-2xl"></i>
-                    </div>
+                    <button onclick="openAddModal()" class="bg-gradient-to-r from-teal-500 to-emerald-500 p-3 rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl" title="เพิ่มเมนูใหม่">
+                        <i class="fas fa-folder-open text-white text-2xl"></i>
+                    </button>
                     <div>
                         <h1 class="text-2xl font-bold text-gray-800">ระบบแฟ้มเก็บผลงาน</h1>
                         <p class="text-sm text-gray-600">หน่วยไตเทียม สถาบันบำราศนราดูร</p>
+                        <div class="flex items-center space-x-2 mt-2">
+                            <i class="fas fa-shield-alt text-teal-600 animate-pulse"></i>
+                            <p class="text-sm font-semibold text-teal-700">2 P Safety Goals (SIMPLE)</p>
+                        </div>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <i class="fas fa-heart text-red-500 animate-bounce"></i>
+                            <p class="text-xs text-gray-600">ผู้ป่วยปลอดภัย เราก็ปลอดภัย</p>
+                        </div>
                     </div>
                 </div>
-                <button onclick="openAddModal()" class="bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-6 py-3 rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center space-x-2">
-                    <i class="fas fa-plus"></i>
-                    <span>เพิ่มเมนู</span>
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- Menu Grid -->
+    <!-- Menu Categories -->
     <div class="container mx-auto px-4 py-8">
-        <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            <!-- Menu items will be loaded here -->
+        <div id="menuCategories">
+            <!-- Categories will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Development Plan Table -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-teal-200 p-6">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-tasks text-teal-600 text-2xl animate-pulse"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">แผนพัฒนาต่อเนื่อง</h2>
+                </div>
+                <button onclick="openPlanModal()" class="bg-gradient-to-r from-teal-500 to-emerald-500 p-3 rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl" title="เพิ่มแผนใหม่">
+                    <i class="fas fa-plus text-white text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-teal-50 border-b border-teal-200">
+                            <th class="text-left py-3 px-4 font-semibold text-gray-700">หัวข้อ</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-700">ความคืบหน้า</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-700">หมายเหตุ</th>
+                            <th class="text-center py-3 px-4 font-semibold text-gray-700 w-20">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="planTableBody">
+                        <!-- Plan rows will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -104,6 +138,22 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">ลิงค์</label>
                     <input type="url" id="menuLink" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="https://example.com">
+                </div>
+
+                <!-- Work Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ประเภทงาน</label>
+                    <select id="workType" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                        <option value="แนะนำหน่วยไตเทียม และแผนพัฒนา">แนะนำหน่วยไตเทียม และแผนพัฒนา</option>
+                        <option value="ระบบคุณภาพและความปลอดภัย">ระบบคุณภาพและความปลอดภัย</option>
+                        <option value="KPI และ Productivity">KPI และ Productivity</option>
+                        <option value="ข้อมูลคลินิกและผลทางการแพทย์">ข้อมูลคลินิกและผลทางการแพทย์</option>
+                        <option value="แนวปฏิบัติ">แนวปฏิบัติ</option>
+                        <option value="ผลงาน CQIและนวัตกรรม">ผลงาน CQIและนวัตกรรม</option>
+                        <option value="ผลงานวิจัย">ผลงานวิจัย</option>
+                        <option value="บทความวิชาการ">บทความวิชาการ</option>
+                        <option value="อื่นๆ">อื่นๆ</option>
+                    </select>
                 </div>
 
                 <!-- Icon Selection -->
@@ -142,6 +192,50 @@
         </div>
     </div>
 
+    <!-- Plan Modal -->
+    <div id="planModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800" id="planModalTitle">เพิ่มแผนพัฒนาใหม่</h2>
+                    <button onclick="closePlanModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <!-- Plan Title -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">หัวข้อ</label>
+                    <input type="text" id="planTitle" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="กรอกหัวข้อแผนพัฒนา">
+                </div>
+
+                <!-- Progress -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ความคืบหน้า (%)</label>
+                    <input type="number" id="planProgress" min="0" max="100" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="0-100">
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">หมายเหตุ</label>
+                    <textarea id="planNotes" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="กรอกหมายเหตุ (ถ้ามี)"></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-4">
+                    <button onclick="closePlanModal()" class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors">
+                        ยกเลิก
+                    </button>
+                    <button onclick="savePlan()" class="flex-1 px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all" id="planSaveBtn">
+                        บันทึก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Edit Menu Modal -->
     <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -165,6 +259,22 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">ลิงค์</label>
                     <input type="url" id="editMenuLink" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="https://example.com">
+                </div>
+
+                <!-- Work Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ประเภทงาน</label>
+                    <select id="editWorkType" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                        <option value="แนะนำหน่วยไตเทียม และแผนพัฒนา">แนะนำหน่วยไตเทียม และแผนพัฒนา</option>
+                        <option value="ระบบคุณภาพและความปลอดภัย">ระบบคุณภาพและความปลอดภัย</option>
+                        <option value="KPI และ Productivity">KPI และ Productivity</option>
+                        <option value="ข้อมูลคลินิกและผลทางการแพทย์">ข้อมูลคลินิกและผลทางการแพทย์</option>
+                        <option value="แนวปฏิบัติ">แนวปฏิบัติ</option>
+                        <option value="ผลงาน CQIและนวัตกรรม">ผลงาน CQIและนวัตกรรม</option>
+                        <option value="ผลงานวิจัย">ผลงานวิจัย</option>
+                        <option value="บทความวิชาการ">บทความวิชาการ</option>
+                        <option value="อื่นๆ">อื่นๆ</option>
+                    </select>
                 </div>
 
                 <!-- Icon Selection -->
@@ -209,6 +319,7 @@
     <script>
         // Configuration
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9Zaiu01yY2HdcmQvUgygoRQbCO_q9CTcIG2Iyviqsb03CKrrw16hlyse9GGEVYzqo/exec';
+        const PLAN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzRKwlhac2TC99pdwx1a0MoBk_iouZ9wJeGVtIt-CAJiEFFSk3Bu-0IFcpPredZC2827A/exec';
         
         // Medical Icons (50 icons)
         const medicalIcons = [
@@ -237,10 +348,39 @@
         let editSelectedIcon = 'fa-stethoscope';
         let editSelectedColor = '#14b8a6';
         let currentEditRowIndex = null;
+        let currentEditPlanIndex = null;
+        let isEditingPlan = false;
+
+        // Work type categories with icons
+        const workTypes = [
+            'แนะนำหน่วยไตเทียม และแผนพัฒนา',
+            'ระบบคุณภาพและความปลอดภัย',
+            'KPI และ Productivity',
+            'ข้อมูลคลินิกและผลทางการแพทย์',
+            'แนวปฏิบัติ',
+            'ผลงาน CQIและนวัตกรรม',
+            'ผลงานวิจัย',
+            'บทความวิชาการ',
+            'อื่นๆ'
+        ];
+
+        // Category icons with animations
+        const categoryIcons = {
+            'แนะนำหน่วยไตเทียม และแผนพัฒนา': 'fas fa-hospital animate-pulse',
+            'ระบบคุณภาพและความปลอดภัย': 'fas fa-shield-alt animate-bounce',
+            'KPI และ Productivity': 'fas fa-chart-line animate-pulse',
+            'ข้อมูลคลินิกและผลทางการแพทย์': 'fas fa-stethoscope animate-bounce',
+            'แนวปฏิบัติ': 'fas fa-clipboard-list animate-pulse',
+            'ผลงาน CQIและนวัตกรรม': 'fas fa-lightbulb animate-bounce',
+            'ผลงานวิจัย': 'fas fa-microscope animate-pulse',
+            'บทความวิชาการ': 'fas fa-book-open animate-bounce',
+            'อื่นๆ': 'fas fa-folder animate-pulse'
+        };
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadMenus();
+            loadPlans();
             initializeIconSelector();
             initializeColorSelector();
             initializeEditIconSelector();
@@ -256,16 +396,71 @@
 
         // Handle menu data callback
         function handleMenuData(data) {
-            const menuGrid = document.getElementById('menuGrid');
-            menuGrid.innerHTML = '';
+            const menuCategories = document.getElementById('menuCategories');
+            menuCategories.innerHTML = '';
+
+            console.log('Received data:', data); // Debug log
 
             if (data && Array.isArray(data) && data.length > 0) {
+                // Group menus by work type
+                const groupedMenus = {};
+                
                 data.forEach((menu, index) => {
-                    if (menu['Menu Name'] && menu['Link']) {
-                        const menuCard = createMenuCard(menu, index + 2); // +2 because row 1 is header
-                        menuGrid.appendChild(menuCard);
+                    console.log('Processing menu:', menu); // Debug log
+                    console.log('Menu keys:', Object.keys(menu)); // Debug log to see all keys
+                    
+                    if (menu.menuName && menu.link) {
+                        // Use the workType field directly from the response
+                        let workType = menu.workType;
+                        
+                        console.log('Work type found:', workType); // Debug log
+                        
+                        // If no work type is specified or empty, put in "อื่นๆ"
+                        if (!workType || workType.trim() === '') {
+                            workType = 'อื่นๆ';
+                        }
+                        
+                        if (!groupedMenus[workType]) {
+                            groupedMenus[workType] = [];
+                        }
+                        groupedMenus[workType].push({
+                            'Menu Name': menu.menuName,
+                            'Link': menu.link,
+                            'icon': menu.icon,
+                            'สี': menu.color,
+                            'ประเภทงาน': menu.workType,
+                            rowIndex: index + 2
+                        });
                     }
                 });
+
+                console.log('Grouped menus:', groupedMenus); // Debug log
+
+                // Create category sections in the order defined in workTypes array
+                workTypes.forEach(workType => {
+                    if (groupedMenus[workType] && groupedMenus[workType].length > 0) {
+                        const categorySection = createCategorySection(workType, groupedMenus[workType]);
+                        menuCategories.appendChild(categorySection);
+                    }
+                });
+
+                // If no categories were created, show all menus under "อื่นๆ"
+                if (menuCategories.children.length === 0) {
+                    console.log('No categories found, showing all under อื่นๆ');
+                    const allMenus = data.filter(menu => menu.menuName && menu.link)
+                                        .map((menu, index) => ({
+                                            'Menu Name': menu.menuName,
+                                            'Link': menu.link,
+                                            'icon': menu.icon,
+                                            'สี': menu.color,
+                                            'ประเภทงาน': 'อื่นๆ',
+                                            rowIndex: index + 2
+                                        }));
+                    if (allMenus.length > 0) {
+                        const categorySection = createCategorySection('อื่นๆ', allMenus);
+                        menuCategories.appendChild(categorySection);
+                    }
+                }
             } else if (data && !data.success && data.message) {
                 // Handle error response
                 console.error('Error loading data:', data.message);
@@ -275,7 +470,36 @@
                     text: 'ไม่สามารถโหลดข้อมูลได้: ' + data.message,
                     confirmButtonColor: '#14b8a6'
                 });
+            } else {
+                console.log('No data received or empty data');
+                menuCategories.innerHTML = '<div class="text-center text-gray-500 py-8">ไม่มีข้อมูลเมนู</div>';
             }
+        }
+
+        // Create category section
+        function createCategorySection(workType, menus) {
+            const section = document.createElement('div');
+            section.className = 'mb-8';
+            
+            const iconClass = categoryIcons[workType] || 'fas fa-folder animate-pulse';
+            section.innerHTML = `
+                <div class="mb-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="${iconClass} text-teal-600 text-xl"></i>
+                        <h2 class="text-xl font-bold text-gray-800 border-b-2 border-teal-500 pb-2">${workType}</h2>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="category-${workType.replace(/\s+/g, '-')}">
+                </div>
+            `;
+            
+            const grid = section.querySelector(`#category-${workType.replace(/\s+/g, '-')}`);
+            menus.forEach(menu => {
+                const menuCard = createMenuCard(menu, menu.rowIndex);
+                grid.appendChild(menuCard);
+            });
+            
+            return section;
         }
 
         // Create menu card
@@ -288,7 +512,7 @@
             
             card.innerHTML = `
                 <div class="absolute top-2 right-2">
-                    <button onclick="event.stopPropagation(); editMenu(${rowIndex}, '${menu['Menu Name']}', '${menu['Link']}', '${iconClass}', '${iconColor}')" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors" title="แก้ไข">
+                    <button onclick="event.stopPropagation(); editMenu(${rowIndex}, '${menu['Menu Name']}', '${menu['Link']}', '${iconClass}', '${iconColor}', '${menu['ประเภทงาน'] || 'อื่นๆ'}')" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors" title="แก้ไข">
                         <i class="fas fa-edit text-gray-600 text-sm"></i>
                     </button>
                 </div>
@@ -402,6 +626,7 @@
         function saveMenu() {
             const menuName = document.getElementById('menuName').value.trim();
             const menuLink = document.getElementById('menuLink').value.trim();
+            const workType = document.getElementById('workType').value;
 
             if (!menuName || !menuLink) {
                 Swal.fire({
@@ -427,6 +652,7 @@
                 action: 'addData',
                 menuName: menuName,
                 link: menuLink,
+                workType: workType,
                 icon: selectedIcon,
                 color: selectedColor
             };
@@ -465,12 +691,13 @@
         }
 
         // Edit menu functions
-        function editMenu(rowIndex, menuName, link, icon, color) {
+        function editMenu(rowIndex, menuName, link, icon, color, workType) {
             currentEditRowIndex = rowIndex;
             
             // Populate form
             document.getElementById('editMenuName').value = menuName;
             document.getElementById('editMenuLink').value = link;
+            document.getElementById('editWorkType').value = workType || 'อื่นๆ';
             editSelectedIcon = icon;
             editSelectedColor = color;
             
@@ -495,6 +722,7 @@
         function updateMenu() {
             const menuName = document.getElementById('editMenuName').value.trim();
             const menuLink = document.getElementById('editMenuLink').value.trim();
+            const workType = document.getElementById('editWorkType').value;
 
             if (!menuName || !menuLink) {
                 Swal.fire({
@@ -521,6 +749,7 @@
                 index: currentEditRowIndex,
                 menuName: menuName,
                 link: menuLink,
+                workType: workType,
                 icon: editSelectedIcon,
                 color: editSelectedColor
             };
@@ -696,6 +925,290 @@
             });
         }
 
+        // Plan Management Functions
+        function loadPlans() {
+            const script = document.createElement('script');
+            script.src = `${PLAN_SCRIPT_URL}?callback=handlePlanData&action=getData`;
+            document.head.appendChild(script);
+        }
+
+        function handlePlanData(data) {
+            const planTableBody = document.getElementById('planTableBody');
+            planTableBody.innerHTML = '';
+
+            if (data && Array.isArray(data) && data.length > 0) {
+                data.forEach((plan, index) => {
+                    if (plan.title) {
+                        const row = createPlanRow(plan, index + 2);
+                        planTableBody.appendChild(row);
+                    }
+                });
+            } else {
+                planTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-500">ไม่มีข้อมูลแผนพัฒนา</td></tr>';
+            }
+        }
+
+        function createPlanRow(plan, rowIndex) {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-gray-200 hover:bg-gray-50';
+            
+            const progress = plan.progress || 0;
+            const progressColor = progress < 30 ? 'bg-red-500' : progress < 70 ? 'bg-yellow-500' : 'bg-green-500';
+            
+            row.innerHTML = `
+                <td class="py-3 px-4 text-gray-800">${plan.title}</td>
+                <td class="py-3 px-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="${progressColor} h-2 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+                    </div>
+                    <span class="text-xs text-gray-600 mt-1">${progress}%</span>
+                </td>
+                <td class="py-3 px-4 text-gray-600 text-sm">${plan.notes || '-'}</td>
+                <td class="py-3 px-4 text-center">
+                    <div class="relative inline-block">
+                        <button onclick="togglePlanActions(${rowIndex})" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors" title="จัดการ">
+                            <i class="fas fa-ellipsis-v text-gray-600"></i>
+                        </button>
+                        <div id="planActions-${rowIndex}" class="hidden absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border z-10">
+                            <button onclick="viewPlan(${rowIndex}, '${plan.title}', ${progress}, '${plan.notes || ''}')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg">
+                                <i class="fas fa-eye mr-2"></i>ดู
+                            </button>
+                            <button onclick="editPlan(${rowIndex}, '${plan.title}', ${progress}, '${plan.notes || ''}')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-edit mr-2"></i>แก้ไข
+                            </button>
+                            <button onclick="deletePlan(${rowIndex})" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-b-lg">
+                                <i class="fas fa-trash mr-2"></i>ลบ
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            `;
+            
+            return row;
+        }
+
+        function togglePlanActions(rowIndex) {
+            const actionsDiv = document.getElementById(`planActions-${rowIndex}`);
+            const allActions = document.querySelectorAll('[id^="planActions-"]');
+            
+            // Hide all other action menus
+            allActions.forEach(div => {
+                if (div.id !== `planActions-${rowIndex}`) {
+                    div.classList.add('hidden');
+                }
+            });
+            
+            // Toggle current menu
+            actionsDiv.classList.toggle('hidden');
+        }
+
+        function openPlanModal() {
+            isEditingPlan = false;
+            document.getElementById('planModalTitle').textContent = 'เพิ่มแผนพัฒนาใหม่';
+            document.getElementById('planSaveBtn').textContent = 'บันทึก';
+            document.getElementById('planTitle').value = '';
+            document.getElementById('planProgress').value = '';
+            document.getElementById('planNotes').value = '';
+            document.getElementById('planModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePlanModal() {
+            document.getElementById('planModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            currentEditPlanIndex = null;
+            isEditingPlan = false;
+        }
+
+        function editPlan(rowIndex, title, progress, notes) {
+            isEditingPlan = true;
+            currentEditPlanIndex = rowIndex;
+            document.getElementById('planModalTitle').textContent = 'แก้ไขแผนพัฒนา';
+            document.getElementById('planSaveBtn').textContent = 'อัพเดท';
+            document.getElementById('planTitle').value = title;
+            document.getElementById('planProgress').value = progress;
+            document.getElementById('planNotes').value = notes;
+            document.getElementById('planModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Hide action menu
+            document.getElementById(`planActions-${rowIndex}`).classList.add('hidden');
+        }
+
+        function viewPlan(rowIndex, title, progress, notes) {
+            Swal.fire({
+                title: title,
+                html: `
+                    <div class="text-left space-y-3">
+                        <div>
+                            <strong>ความคืบหน้า:</strong> ${progress}%
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                <div class="${progress < 30 ? 'bg-red-500' : progress < 70 ? 'bg-yellow-500' : 'bg-green-500'} h-2 rounded-full" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <strong>หมายเหตุ:</strong><br>
+                            ${notes || 'ไม่มีหมายเหตุ'}
+                        </div>
+                    </div>
+                `,
+                confirmButtonColor: '#14b8a6',
+                confirmButtonText: 'ปิด'
+            });
+            
+            // Hide action menu
+            document.getElementById(`planActions-${rowIndex}`).classList.add('hidden');
+        }
+
+        function savePlan() {
+            const title = document.getElementById('planTitle').value.trim();
+            const progress = parseInt(document.getElementById('planProgress').value) || 0;
+            const notes = document.getElementById('planNotes').value.trim();
+
+            if (!title) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกหัวข้อ',
+                    text: 'หัวข้อเป็นข้อมูลที่จำเป็น',
+                    confirmButtonColor: '#14b8a6'
+                });
+                return;
+            }
+
+            if (progress < 0 || progress > 100) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ความคืบหน้าไม่ถูกต้อง',
+                    text: 'กรุณากรอกความคืบหน้าระหว่าง 0-100',
+                    confirmButtonColor: '#14b8a6'
+                });
+                return;
+            }
+
+            // Show loading
+            Swal.fire({
+                title: isEditingPlan ? 'กำลังอัพเดทข้อมูล...' : 'กำลังบันทึกข้อมูล...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const planData = {
+                action: isEditingPlan ? 'updateData' : 'addData',
+                title: title,
+                progress: progress,
+                notes: notes
+            };
+
+            if (isEditingPlan) {
+                planData.index = currentEditPlanIndex;
+            }
+
+            // Send data using JSONP
+            const script = document.createElement('script');
+            const callbackName = 'planCallback_' + Date.now();
+            
+            window[callbackName] = function(response) {
+                document.head.removeChild(script);
+                delete window[callbackName];
+                
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: isEditingPlan ? 'อัพเดทสำเร็จ!' : 'บันทึกสำเร็จ!',
+                        text: isEditingPlan ? 'แผนพัฒนาถูกอัพเดทเรียบร้อยแล้ว' : 'แผนพัฒนาใหม่ถูกเพิ่มเรียบร้อยแล้ว',
+                        confirmButtonColor: '#14b8a6'
+                    }).then(() => {
+                        closePlanModal();
+                        loadPlans();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: response.message || 'ไม่สามารถบันทึกข้อมูลได้',
+                        confirmButtonColor: '#14b8a6'
+                    });
+                }
+            };
+
+            const params = new URLSearchParams(planData).toString();
+            script.src = `${PLAN_SCRIPT_URL}?${params}&callback=${callbackName}`;
+            document.head.appendChild(script);
+        }
+
+        function deletePlan(rowIndex) {
+            Swal.fire({
+                title: 'ยืนยันการลบ',
+                text: 'คุณต้องการลบแผนพัฒนานี้หรือไม่?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading
+                    Swal.fire({
+                        title: 'กำลังลบข้อมูล...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    const deleteData = {
+                        action: 'deleteData',
+                        index: rowIndex
+                    };
+
+                    const script = document.createElement('script');
+                    const callbackName = 'deletePlanCallback_' + Date.now();
+                    
+                    window[callbackName] = function(response) {
+                        document.head.removeChild(script);
+                        delete window[callbackName];
+                        
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'ลบสำเร็จ!',
+                                text: 'แผนพัฒนาถูกลบเรียบร้อยแล้ว',
+                                confirmButtonColor: '#14b8a6'
+                            }).then(() => {
+                                loadPlans();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'เกิดข้อผิดพลาด',
+                                text: response.message || 'ไม่สามารถลบข้อมูลได้',
+                                confirmButtonColor: '#14b8a6'
+                            });
+                        }
+                    };
+
+                    const params = new URLSearchParams(deleteData).toString();
+                    script.src = `${PLAN_SCRIPT_URL}?${params}&callback=${callbackName}`;
+                    document.head.appendChild(script);
+                }
+            });
+            
+            // Hide action menu
+            document.getElementById(`planActions-${rowIndex}`).classList.add('hidden');
+        }
+
+        // Close action menus when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('[id^="planActions-"]') && !e.target.closest('button[onclick*="togglePlanActions"]')) {
+                document.querySelectorAll('[id^="planActions-"]').forEach(div => {
+                    div.classList.add('hidden');
+                });
+            }
+        });
+
         // Handle errors
         window.addEventListener('error', function(e) {
             if (e.target.tagName === 'SCRIPT') {
@@ -708,5 +1221,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'961f0dcdc28dce0f',t:'MTc1Mjk3ODgwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'961fbc4eb41033b6',t:'MTc1Mjk4NTk1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
