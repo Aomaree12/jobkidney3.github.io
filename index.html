@@ -1,0 +1,712 @@
+
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบแฟ้มเก็บผลงาน - หน่วยไตเทียม สถาบันบำราศนราดูร</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            min-height: 100vh;
+        }
+        
+        .menu-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .icon-selector {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .selected-color {
+            ring: 3px;
+            ring-offset: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-teal-50 to-emerald-100">
+    <!-- Header -->
+    <div class="bg-white/80 backdrop-blur-md shadow-lg border-b border-teal-200">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-gradient-to-r from-teal-500 to-emerald-500 p-3 rounded-xl">
+                        <i class="fas fa-kidneys text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">ระบบแฟ้มเก็บผลงาน</h1>
+                        <p class="text-sm text-gray-600">หน่วยไตเทียม สถาบันบำราศนราดูร</p>
+                    </div>
+                </div>
+                <button onclick="openAddModal()" class="bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-6 py-3 rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center space-x-2">
+                    <i class="fas fa-plus"></i>
+                    <span>เพิ่มเมนู</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="container mx-auto px-4 py-8">
+        <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <!-- Menu items will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Add Menu Modal -->
+    <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800">เพิ่มเมนูใหม่</h2>
+                    <button onclick="closeAddModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <!-- Menu Name -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อเมนู</label>
+                    <input type="text" id="menuName" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="กรอกชื่อเมนู">
+                </div>
+
+                <!-- Link -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ลิงค์</label>
+                    <input type="url" id="menuLink" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="https://example.com">
+                </div>
+
+                <!-- Icon Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">เลือกไอคอน</label>
+                    <div class="border border-gray-300 rounded-xl p-4">
+                        <div class="mb-3">
+                            <div class="flex items-center justify-center w-16 h-16 bg-teal-100 rounded-xl mx-auto">
+                                <i id="selectedIcon" class="fas fa-stethoscope text-2xl text-teal-600"></i>
+                            </div>
+                        </div>
+                        <div class="icon-selector grid grid-cols-10 gap-2">
+                            <!-- Medical Icons -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">เลือกสี</label>
+                    <div class="grid grid-cols-10 gap-3" id="colorSelector">
+                        <!-- Colors will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-4">
+                    <button onclick="closeAddModal()" class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors">
+                        ยกเลิก
+                    </button>
+                    <button onclick="saveMenu()" class="flex-1 px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all">
+                        บันทึก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Menu Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800">แก้ไขเมนู</h2>
+                    <button onclick="closeEditModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <!-- Menu Name -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อเมนู</label>
+                    <input type="text" id="editMenuName" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="กรอกชื่อเมนู">
+                </div>
+
+                <!-- Link -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ลิงค์</label>
+                    <input type="url" id="editMenuLink" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="https://example.com">
+                </div>
+
+                <!-- Icon Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">เลือกไอคอน</label>
+                    <div class="border border-gray-300 rounded-xl p-4">
+                        <div class="mb-3">
+                            <div class="flex items-center justify-center w-16 h-16 bg-teal-100 rounded-xl mx-auto">
+                                <i id="editSelectedIcon" class="fas fa-stethoscope text-2xl text-teal-600"></i>
+                            </div>
+                        </div>
+                        <div class="edit-icon-selector grid grid-cols-10 gap-2">
+                            <!-- Medical Icons -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">เลือกสี</label>
+                    <div class="grid grid-cols-10 gap-3" id="editColorSelector">
+                        <!-- Colors will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-4">
+                    <button onclick="deleteMenu()" class="px-6 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors">
+                        <i class="fas fa-trash mr-2"></i>ลบ
+                    </button>
+                    <button onclick="closeEditModal()" class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors">
+                        ยกเลิก
+                    </button>
+                    <button onclick="updateMenu()" class="flex-1 px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all">
+                        อัพเดท
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9Zaiu01yY2HdcmQvUgygoRQbCO_q9CTcIG2Iyviqsb03CKrrw16hlyse9GGEVYzqo/exec';
+        
+        // Medical Icons (50 icons)
+        const medicalIcons = [
+            'fa-stethoscope', 'fa-heartbeat', 'fa-user-md', 'fa-hospital', 'fa-ambulance',
+            'fa-pills', 'fa-syringe', 'fa-thermometer', 'fa-band-aid', 'fa-x-ray',
+            'fa-dna', 'fa-microscope', 'fa-lungs', 'fa-brain', 'fa-tooth',
+            'fa-eye', 'fa-hand-holding-heart', 'fa-wheelchair', 'fa-bed', 'fa-clipboard-list',
+            'fa-chart-line', 'fa-calendar-check', 'fa-file-medical', 'fa-notes-medical', 'fa-prescription-bottle',
+            'fa-first-aid', 'fa-heart', 'fa-kidneys', 'fa-bone', 'fa-virus',
+            'fa-shield-virus', 'fa-mask', 'fa-hand-sparkles', 'fa-pump-medical', 'fa-weight-scale',
+            'fa-smoking-ban', 'fa-running', 'fa-apple-alt', 'fa-leaf', 'fa-water',
+            'fa-sun', 'fa-moon', 'fa-clock', 'fa-bell', 'fa-phone',
+            'fa-envelope', 'fa-home', 'fa-user', 'fa-users', 'fa-cog'
+        ];
+
+        // Colors (20 colors)
+        const colors = [
+            '#14b8a6', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6',
+            '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#ef4444',
+            '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e',
+            '#10b981', '#059669', '#0d9488', '#0891b2', '#0284c7'
+        ];
+
+        let selectedIcon = 'fa-stethoscope';
+        let selectedColor = '#14b8a6';
+        let editSelectedIcon = 'fa-stethoscope';
+        let editSelectedColor = '#14b8a6';
+        let currentEditRowIndex = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMenus();
+            initializeIconSelector();
+            initializeColorSelector();
+            initializeEditIconSelector();
+            initializeEditColorSelector();
+        });
+
+        // Load menus from Google Sheets
+        function loadMenus() {
+            const script = document.createElement('script');
+            script.src = `${SCRIPT_URL}?callback=handleMenuData&action=getData`;
+            document.head.appendChild(script);
+        }
+
+        // Handle menu data callback
+        function handleMenuData(data) {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = '';
+
+            if (data && Array.isArray(data) && data.length > 0) {
+                data.forEach((menu, index) => {
+                    if (menu['Menu Name'] && menu['Link']) {
+                        const menuCard = createMenuCard(menu, index + 2); // +2 because row 1 is header
+                        menuGrid.appendChild(menuCard);
+                    }
+                });
+            } else if (data && !data.success && data.message) {
+                // Handle error response
+                console.error('Error loading data:', data.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถโหลดข้อมูลได้: ' + data.message,
+                    confirmButtonColor: '#14b8a6'
+                });
+            }
+        }
+
+        // Create menu card
+        function createMenuCard(menu, rowIndex) {
+            const card = document.createElement('div');
+            card.className = 'menu-card bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border border-teal-100 relative';
+            
+            const iconColor = menu['สี'] || '#14b8a6';
+            const iconClass = menu['icon'] || 'fa-stethoscope';
+            
+            card.innerHTML = `
+                <div class="absolute top-2 right-2">
+                    <button onclick="event.stopPropagation(); editMenu(${rowIndex}, '${menu['Menu Name']}', '${menu['Link']}', '${iconClass}', '${iconColor}')" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors" title="แก้ไข">
+                        <i class="fas fa-edit text-gray-600 text-sm"></i>
+                    </button>
+                </div>
+                <div class="text-center" onclick="event.stopPropagation(); openLink('${menu['Link']}')">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center" style="background-color: ${iconColor}20;">
+                        <i class="fas ${iconClass} text-3xl" style="color: ${iconColor};"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm mb-2">${menu['Menu Name']}</h3>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Open link - optimized for LINE application
+        function openLink(url) {
+            // Check if running in LINE app
+            const isLineApp = /Line/i.test(navigator.userAgent);
+            
+            if (isLineApp) {
+                // For LINE app, use location.href for better compatibility
+                window.location.href = url;
+            } else {
+                // For regular browsers, use window.open
+                window.open(url, '_blank');
+            }
+        }
+
+        // Initialize icon selector
+        function initializeIconSelector() {
+            const iconSelector = document.querySelector('.icon-selector');
+            medicalIcons.forEach(icon => {
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg cursor-pointer hover:bg-teal-100 transition-colors';
+                iconDiv.innerHTML = `<i class="fas ${icon} text-gray-600"></i>`;
+                iconDiv.onclick = () => selectIcon(icon, iconDiv);
+                iconSelector.appendChild(iconDiv);
+            });
+        }
+
+        // Select icon
+        function selectIcon(icon, element) {
+            // Remove previous selection
+            document.querySelectorAll('.icon-selector > div').forEach(div => {
+                div.classList.remove('bg-teal-200', 'ring-2', 'ring-teal-500');
+                div.classList.add('bg-gray-100');
+            });
+            
+            // Add selection to clicked element
+            element.classList.remove('bg-gray-100');
+            element.classList.add('bg-teal-200', 'ring-2', 'ring-teal-500');
+            
+            // Update selected icon
+            selectedIcon = icon;
+            document.getElementById('selectedIcon').className = `fas ${icon} text-2xl text-teal-600`;
+        }
+
+        // Initialize color selector
+        function initializeColorSelector() {
+            const colorSelector = document.getElementById('colorSelector');
+            colors.forEach((color, index) => {
+                const colorDiv = document.createElement('div');
+                colorDiv.className = `color-option ${index === 0 ? 'selected-color ring-teal-500' : ''}`;
+                colorDiv.style.backgroundColor = color;
+                colorDiv.onclick = () => selectColor(color, colorDiv);
+                colorSelector.appendChild(colorDiv);
+            });
+        }
+
+        // Select color
+        function selectColor(color, element) {
+            // Remove previous selection
+            document.querySelectorAll('.color-option').forEach(div => {
+                div.classList.remove('selected-color', 'ring-teal-500');
+            });
+            
+            // Add selection to clicked element
+            element.classList.add('selected-color', 'ring-teal-500');
+            selectedColor = color;
+        }
+
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('addModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            
+            // Reset form
+            document.getElementById('menuName').value = '';
+            document.getElementById('menuLink').value = '';
+            selectedIcon = 'fa-stethoscope';
+            selectedColor = '#14b8a6';
+            
+            // Reset selections
+            document.getElementById('selectedIcon').className = 'fas fa-stethoscope text-2xl text-teal-600';
+            document.querySelectorAll('.icon-selector > div').forEach(div => {
+                div.classList.remove('bg-teal-200', 'ring-2', 'ring-teal-500');
+                div.classList.add('bg-gray-100');
+            });
+            document.querySelectorAll('.color-option').forEach((div, index) => {
+                div.classList.remove('selected-color', 'ring-teal-500');
+                if (index === 0) div.classList.add('selected-color', 'ring-teal-500');
+            });
+        }
+
+        // Save menu
+        function saveMenu() {
+            const menuName = document.getElementById('menuName').value.trim();
+            const menuLink = document.getElementById('menuLink').value.trim();
+
+            if (!menuName || !menuLink) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                    text: 'ชื่อเมนูและลิงค์เป็นข้อมูลที่จำเป็น',
+                    confirmButtonColor: '#14b8a6'
+                });
+                return;
+            }
+
+            // Show loading
+            Swal.fire({
+                title: 'กำลังบันทึกข้อมูล...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Prepare data
+            const menuData = {
+                action: 'addData',
+                menuName: menuName,
+                link: menuLink,
+                icon: selectedIcon,
+                color: selectedColor
+            };
+
+            // Send data using JSONP
+            const script = document.createElement('script');
+            const callbackName = 'saveCallback_' + Date.now();
+            
+            window[callbackName] = function(response) {
+                document.head.removeChild(script);
+                delete window[callbackName];
+                
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ!',
+                        text: 'เมนูใหม่ถูกเพิ่มเรียบร้อยแล้ว',
+                        confirmButtonColor: '#14b8a6'
+                    }).then(() => {
+                        closeAddModal();
+                        loadMenus();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: response.message || 'ไม่สามารถบันทึกข้อมูลได้',
+                        confirmButtonColor: '#14b8a6'
+                    });
+                }
+            };
+
+            const params = new URLSearchParams(menuData).toString();
+            script.src = `${SCRIPT_URL}?${params}&callback=${callbackName}`;
+            document.head.appendChild(script);
+        }
+
+        // Edit menu functions
+        function editMenu(rowIndex, menuName, link, icon, color) {
+            currentEditRowIndex = rowIndex;
+            
+            // Populate form
+            document.getElementById('editMenuName').value = menuName;
+            document.getElementById('editMenuLink').value = link;
+            editSelectedIcon = icon;
+            editSelectedColor = color;
+            
+            // Update preview
+            document.getElementById('editSelectedIcon').className = `fas ${icon} text-2xl text-teal-600`;
+            
+            // Update selections
+            updateEditIconSelection(icon);
+            updateEditColorSelection(color);
+            
+            // Show modal
+            document.getElementById('editModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            currentEditRowIndex = null;
+        }
+
+        function updateMenu() {
+            const menuName = document.getElementById('editMenuName').value.trim();
+            const menuLink = document.getElementById('editMenuLink').value.trim();
+
+            if (!menuName || !menuLink) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                    text: 'ชื่อเมนูและลิงค์เป็นข้อมูลที่จำเป็น',
+                    confirmButtonColor: '#14b8a6'
+                });
+                return;
+            }
+
+            // Show loading
+            Swal.fire({
+                title: 'กำลังอัพเดทข้อมูล...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Prepare data
+            const menuData = {
+                action: 'updateData',
+                index: currentEditRowIndex,
+                menuName: menuName,
+                link: menuLink,
+                icon: editSelectedIcon,
+                color: editSelectedColor
+            };
+
+            // Send data using JSONP
+            const script = document.createElement('script');
+            const callbackName = 'updateCallback_' + Date.now();
+            
+            window[callbackName] = function(response) {
+                document.head.removeChild(script);
+                delete window[callbackName];
+                
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'อัพเดทสำเร็จ!',
+                        text: 'ข้อมูลเมนูถูกอัพเดทเรียบร้อยแล้ว',
+                        confirmButtonColor: '#14b8a6'
+                    }).then(() => {
+                        closeEditModal();
+                        loadMenus();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: response.message || 'ไม่สามารถอัพเดทข้อมูลได้',
+                        confirmButtonColor: '#14b8a6'
+                    });
+                }
+            };
+
+            const params = new URLSearchParams(menuData).toString();
+            script.src = `${SCRIPT_URL}?${params}&callback=${callbackName}`;
+            document.head.appendChild(script);
+        }
+
+        function deleteMenu() {
+            Swal.fire({
+                title: 'ยืนยันการลบ',
+                text: 'คุณต้องการลบเมนูนี้หรือไม่?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading
+                    Swal.fire({
+                        title: 'กำลังลบข้อมูล...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Prepare data
+                    const deleteData = {
+                        action: 'deleteData',
+                        index: currentEditRowIndex
+                    };
+
+                    // Send data using JSONP
+                    const script = document.createElement('script');
+                    const callbackName = 'deleteCallback_' + Date.now();
+                    
+                    window[callbackName] = function(response) {
+                        document.head.removeChild(script);
+                        delete window[callbackName];
+                        
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'ลบสำเร็จ!',
+                                text: 'เมนูถูกลบเรียบร้อยแล้ว',
+                                confirmButtonColor: '#14b8a6'
+                            }).then(() => {
+                                closeEditModal();
+                                loadMenus();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'เกิดข้อผิดพลาด',
+                                text: response.message || 'ไม่สามารถลบข้อมูลได้',
+                                confirmButtonColor: '#14b8a6'
+                            });
+                        }
+                    };
+
+                    const params = new URLSearchParams(deleteData).toString();
+                    script.src = `${SCRIPT_URL}?${params}&callback=${callbackName}`;
+                    document.head.appendChild(script);
+                }
+            });
+        }
+
+        // Initialize edit icon selector
+        function initializeEditIconSelector() {
+            const iconSelector = document.querySelector('.edit-icon-selector');
+            medicalIcons.forEach(icon => {
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg cursor-pointer hover:bg-teal-100 transition-colors';
+                iconDiv.innerHTML = `<i class="fas ${icon} text-gray-600"></i>`;
+                iconDiv.onclick = () => selectEditIcon(icon, iconDiv);
+                iconSelector.appendChild(iconDiv);
+            });
+        }
+
+        // Select edit icon
+        function selectEditIcon(icon, element) {
+            // Remove previous selection
+            document.querySelectorAll('.edit-icon-selector > div').forEach(div => {
+                div.classList.remove('bg-teal-200', 'ring-2', 'ring-teal-500');
+                div.classList.add('bg-gray-100');
+            });
+            
+            // Add selection to clicked element
+            element.classList.remove('bg-gray-100');
+            element.classList.add('bg-teal-200', 'ring-2', 'ring-teal-500');
+            
+            // Update selected icon
+            editSelectedIcon = icon;
+            document.getElementById('editSelectedIcon').className = `fas ${icon} text-2xl text-teal-600`;
+        }
+
+        // Initialize edit color selector
+        function initializeEditColorSelector() {
+            const colorSelector = document.getElementById('editColorSelector');
+            colors.forEach((color, index) => {
+                const colorDiv = document.createElement('div');
+                colorDiv.className = `color-option ${index === 0 ? 'selected-color ring-teal-500' : ''}`;
+                colorDiv.style.backgroundColor = color;
+                colorDiv.onclick = () => selectEditColor(color, colorDiv);
+                colorSelector.appendChild(colorDiv);
+            });
+        }
+
+        // Select edit color
+        function selectEditColor(color, element) {
+            // Remove previous selection
+            document.querySelectorAll('#editColorSelector .color-option').forEach(div => {
+                div.classList.remove('selected-color', 'ring-teal-500');
+            });
+            
+            // Add selection to clicked element
+            element.classList.add('selected-color', 'ring-teal-500');
+            editSelectedColor = color;
+        }
+
+        // Update edit selections
+        function updateEditIconSelection(icon) {
+            document.querySelectorAll('.edit-icon-selector > div').forEach((div, index) => {
+                div.classList.remove('bg-teal-200', 'ring-2', 'ring-teal-500');
+                div.classList.add('bg-gray-100');
+                
+                if (medicalIcons[index] === icon) {
+                    div.classList.remove('bg-gray-100');
+                    div.classList.add('bg-teal-200', 'ring-2', 'ring-teal-500');
+                }
+            });
+        }
+
+        function updateEditColorSelection(color) {
+            document.querySelectorAll('#editColorSelector .color-option').forEach((div, index) => {
+                div.classList.remove('selected-color', 'ring-teal-500');
+                
+                if (colors[index] === color) {
+                    div.classList.add('selected-color', 'ring-teal-500');
+                }
+            });
+        }
+
+        // Handle errors
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName === 'SCRIPT') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้',
+                    confirmButtonColor: '#14b8a6'
+                });
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'961f0dcdc28dce0f',t:'MTc1Mjk3ODgwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
